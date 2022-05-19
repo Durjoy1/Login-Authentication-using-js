@@ -14,7 +14,7 @@ let result = {
   user: {},
   error: null,
 };
-const _users = localStorage?.getItem('users', JSON.stringify(users));
+const _users = JSON.parse(localStorage?.getItem('users'));
 if (!_users) {
   localStorage?.setItem('users', JSON.stringify(users));
 }
@@ -23,10 +23,10 @@ const loginForm = document.querySelector('#login-form');
 
 loginForm?.addEventListener('submit', (e) => {
   e.preventDefault();
-
   const username = document.querySelector('#username').value;
   const password = document.querySelector('#password').value;
   let users = JSON.parse(localStorage?.getItem('users'));
+
   const foundUser = users.find((user) => user.username === username);
   if (!foundUser) {
     result = {
@@ -41,12 +41,12 @@ loginForm?.addEventListener('submit', (e) => {
       user: {
         fullName: foundUser.fullName,
         username: foundUser.username,
+        password,
       },
     };
 
-    window.location.href = '/';
     localStorage.setItem('user', JSON.stringify(result.user));
-    localStorage.setItem('isLoggedIn', true);
+    window.location.href = '/';
   }
   result.error && alert(result.error);
 });
@@ -87,11 +87,11 @@ signupForm?.addEventListener('submit', (e) => {
         user: {
           fullName,
           username,
+          password,
         },
       };
-      window.location.href = '/';
       localStorage.setItem('user', JSON.stringify(result.user));
-      localStorage.setItem('isLoggedIn', true);
+      window.location.href = '/';
     }
   }
   result.error && alert(result.error);
