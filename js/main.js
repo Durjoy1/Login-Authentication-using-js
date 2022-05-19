@@ -30,25 +30,25 @@ loginForm?.addEventListener('submit', (e) => {
   const foundUser = users.find((user) => user.username === username);
   if (!foundUser) {
     result = {
-      ...result,
       error: 'Invalid username',
     };
   } else if (foundUser.password !== password) {
     result = {
-      ...result,
       error: 'Wrong password',
     };
   } else {
     result = {
-      ...result,
       user: {
         fullName: foundUser.fullName,
         username: foundUser.username,
       },
     };
+
+    window.location.href = '/';
     localStorage.setItem('user', JSON.stringify(result.user));
     localStorage.setItem('isLoggedIn', true);
   }
+  result.error && alert(result.error);
 });
 
 //Signup Method
@@ -63,7 +63,6 @@ signupForm?.addEventListener('submit', (e) => {
   ).value;
   if (password !== confirmPassword) {
     result = {
-      ...result,
       error: 'Password mismatched',
     };
   } else {
@@ -73,7 +72,6 @@ signupForm?.addEventListener('submit', (e) => {
     );
     if (foundUser) {
       result = {
-        ...result,
         error: 'Username is already taken',
       };
     } else {
@@ -86,23 +84,15 @@ signupForm?.addEventListener('submit', (e) => {
       localStorage.setItem('users', JSON.stringify(users));
 
       result = {
-        ...result,
         user: {
           fullName,
           username,
         },
       };
+      window.location.href = '/';
       localStorage.setItem('user', JSON.stringify(result.user));
       localStorage.setItem('isLoggedIn', true);
     }
   }
+  result.error && alert(result.error);
 });
-
-const getUserInfo = () => {
-  return JSON.parse(localStorage?.getItem('user'));
-};
-const isLoggedIn = () => {
-  return JSON.parse(localStorage?.getItem('isLoggedIn'));
-};
-console.log(isLoggedIn());
-if (isLoggedIn()) console.log(getUserInfo());
